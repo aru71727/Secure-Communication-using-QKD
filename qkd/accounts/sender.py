@@ -1,13 +1,13 @@
 from .qubit import qubit
 from .quantum import quantum_user
 from random import randint
-
+from .models import secret_keys
 
 sender_basis = list()
 sender_bits = list()
 alice_key = list()
 alice_basis = list()
-sender_secret_key = ""
+
 
 def sender(N):
 	alice_basis = generate_random_bits(N)
@@ -29,19 +29,25 @@ def receiver_basis(N,receiver_basis):
 	return sender_basis
 
 
-def receiver_bits(bob_key):
+def receiver_bits(bob_key,idx):
 	if alice_key != bob_key:
 		key = False
 		length = None
+		print ("Encription key mismatch, eve is present.")
 	else:
 		key = True
 		length = len(alice_key)
+		print ("Successfully exchanged key!")
 		print ("Key Length: " + str(length))
-		print  ("Alice Key : {} " .format(alice_key))
+		
 		key_length = 128
 		key_value = (hex(int(''.join([ str(i) for i in alice_key]), 2))[2:key_length + 2])
-		sender_secret_key = key_value
+		secret_key = secret_keys.objects.filter(id= idx)
+		secret_key = secret_key[0].sender_key+key_value
+		secret_keys.objects.filter(id= idx).update(sender_key = secret_key)
+	print  ("Alice Key : {} " .format(alice_key))
 	return alice_key
+
 
 
 def generate_random_bits(N):
