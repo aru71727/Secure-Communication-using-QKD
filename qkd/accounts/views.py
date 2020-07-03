@@ -27,5 +27,7 @@ def func(request):
 	u = "{0:.2f}".format(float(ret.count(False))*100.0/float(N))
 	print ("True: {0} <{1}%>".format(ret.count(True),str(t)))
 	print ("False: {0} <{1}%>".format(ret.count(False),str(u)))
-	return render(request,'accounts/index.html')
+
+	key = secret_keys.objects.filter(id = idx)
+	return render(request,'accounts/index.html', {'key' : key[0]})
 
