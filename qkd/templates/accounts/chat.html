@@ -15,7 +15,7 @@
 
   			<div id="div11" style="margin-top: 15px;">
 				{% if user.is_authenticated %}
-				<h1 >HELLO!!  &nbsp;   {{ user.first_name}}</h1>
+				<h1 >HELLO!!  &nbsp;   {{ user.first_name}} </h1>
 				<p style="margin-top: 30px;font-size: 1.4em"><i>Rate your college today!</i></p>
 				{% else %}
 				<h1 >NIT REVIEWS</h1>
@@ -54,7 +54,7 @@
 			{% for i in profiles %}
 			<a href="{% url 'accounts:chat' user.id  i.id %}">
 			<button style="width:350px; height: 50px;">
-			{{i.user}}</button>
+			{{i.user}} {{i.id}}</button>
 			</a><br/>
 			{% endfor %}
 				
@@ -80,6 +80,13 @@
 
 			
 		{% else %}
+			<form method="post" action="{% url 'accounts:reviews' user.id idx add  %}">{% csrf_token %}
+			<h3>Message:</h3> <textarea name="message" placeholder="Enter your message here..." style="width:300px; height: 60px;"></textarea>
+
+			<button onclick = "#" style="width:100px; height: 35px; background-color: green">Send Message</button>
+			</form>
+
+
 				
 			{% endif %}
 		{% else %}
@@ -88,7 +95,7 @@
 			Message :	{{msg.msg_body}}<br/>
 			Message has not seen yet!!!<br/>
 			</h3>
-
+			<h4>Message Not Seen Yet!!!</h4>
 		{% endif %}
 		</div>
 

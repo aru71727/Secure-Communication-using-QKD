@@ -8,7 +8,7 @@ urlpatterns = [
     path(r'register/', registerview, name="register"),
     path(r'login/', loginview, name="login"),
     path(r'logout/', logoutview, name="logout"),
-    path(r'<id>/<idx>/chat/', chat, name="chat"),
+    path(r'<s_idx>/<r_idx>/chat/', chat, name="chat"),
     path(r'<id>/<idx>/<add>/reviews/', reviews, name="reviews"),
    
 

@@ -15,7 +15,7 @@
 
   			<div id="div11" style="margin-top: 15px;">
 				{% if user.is_authenticated %}
-				<h1 >HELLO!!  &nbsp;   {{ user.first_name}}</h1>
+				<h1 >HELLO!!  &nbsp;   {{ user.first_name}} </h1>
 				<p style="margin-top: 30px;font-size: 1.4em"><i>Rate your college today!</i></p>
 				{% else %}
 				<h1 >NIT REVIEWS</h1>
@@ -54,7 +54,7 @@
 			{% for i in profiles %}
 			<a href="{% url 'accounts:chat' user.id i.id%}">
 			<button style="width:350px; height: 50px;">
-			{{i.user}}</button>
+			{{i.user}} {{i.id}}</button>
 			</a><br/>
 			{% endfor %}
 				
