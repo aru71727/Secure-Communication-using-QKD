@@ -1,0 +1,175 @@
+
+<html>
+<head>
+
+<style>
+#he{
+position:relative;
+height:50px;
+width:100%;
+background-color:#28004d;
+}
+.title{
+color:white;
+font-size:40px;
+font-family:lucida console;
+text-align:center;
+}
+
+
+
+</style>
+
+</head>
+<body>
+<div id='he'>
+
+<p class='title'>R E V I E W S</p>
+
+
+</div>
+</body>
+</html><html>
+
+<style>
+body {
+    
+    background-repeat: no-repeat;
+    background-position: right top;
+   
+}
+
+
+#box
+{
+height:20px;
+width:500px;
+margin-left:10px;
+float:right;
+
+}
+
+#1
+{
+font-family:TIMES NEW ROMAN;
+font-size:54;
+color:RED;
+margin-right:50px;
+text-align:left;
+}
+
+#a{
+	background-color:#28004d;
+	height:70px;
+	width:100%; 
+	font-family:segoe script;
+	color:#133926;
+	font-style:bold;
+	font-size:24px;
+	color: white;
+}
+#b{
+  
+	
+	margin-left:70px;
+	margin-right:70px;
+
+	border-radius:10px;
+
+	padding:30px;
+
+ 
+  max-width: 600px;
+  opacity:0.95;
+  background-color:#f2f2f2;
+	
+}
+#bg{
+  background-image: url("/media/accounts/images/notebook.jpg");
+  
+}
+body, html {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+  input {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background:bfbfbf;
+}
+
+input:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+
+.btn {
+  background-color: #80002a;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div id="a"> <center>"Rate your College!!" </center></div>
+<div id="bg">
+<div id="b">
+        <form method="post" action=".">{% csrf_token %}
+
+          {{ form.as_p }}
+          <center>
+          <button type="submit" class="btn btn-success" id="send">Save</button><br><br>
+          <button type="reset" class="btn btn-primary">Clear</button><br><br>
+        </center>
+          
+
+        </form>
+
+</div>
+</div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--         <form method="post" action=".">{% csrf_token %}
+
+          {{ form.as_p }}
+          <center>
+          <button type="submit" class="btn btn-success" id="send">Save</button>
+          <button type="reset" class="btn btn-primary">Clear</button><br><br>
+        </center>
+          
+
+        </form> -->

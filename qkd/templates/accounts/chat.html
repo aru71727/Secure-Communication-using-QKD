@@ -45,14 +45,14 @@
   		</div>
 
 
-		<div id = "div21" style="margin-top:200px;background-color: green;">
-		<div id = "content" style="margin-right:100px;height:400px; width: 200px;  margin-top: 100px">
+		<div id = "div21" style="margin-top:190px;background-color: pink;">
+		<div id = "content" style="margin-right:100px;height:200px; width: 200px;  margin-top: 100px">
 			<center>
 			{% if user.is_authenticated %}
 
 			<table>
 			{% for i in profiles %}
-			<a href="{% url 'accounts:chat' user.id i.id%}">
+			<a href="{% url 'accounts:chat' user.id  i.id %}">
 			<button style="width:350px; height: 50px;">
 			{{i.user}}</button>
 			</a><br/>
@@ -65,6 +65,31 @@
 			{% endif %}
 			</center>
 		</div>
+		{% if seen == False %}
+			{% if add == 0 %}
+			<h3>Sender : {{ msg.sender}}<br/>
+			Receiver : {{ msg.receiver }}<br/>
+			Message :	{{msg.msg_body}}<br/></h3>
+
+<form method="post" action="{% url 'accounts:reviews' user.id idx add  %}">{% csrf_token %}
+	<h3>Message:</h3> <textarea name="message" placeholder="Enter your message here..." style="width:300px; height: 60px;"></textarea>
+
+	<button onclick = "#" style="width:100px; height: 35px; background-color: green">Send Message</button>
+</form>
+
+
+			
+		{% else %}
+				
+			{% endif %}
+		{% else %}
+			<h3>Sender : {{ msg.sender}}<br/>
+			Receiver : {{ msg.receiver }}<br/>
+			Message :	{{msg.msg_body}}<br/>
+			Message has not seen yet!!!<br/>
+			</h3>
+
+		{% endif %}
 		</div>
 
 

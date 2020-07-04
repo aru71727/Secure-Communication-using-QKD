@@ -31,11 +31,11 @@ def receiver(N,alice_qubits,idx):
 		length = len(bob_key)
 		#print ("Successfully exchanged key!")
 		
-		key_length = 128
-		key_value = (hex(int(''.join([ str(i) for i in alice_key]), 2))[2:key_length + 2])
-		secret_key = secret_keys.objects.filter(id = idx)
-		secret_key = secret_key[0].receiver_key+key_value
-		secret_keys.objects.filter(id = idx).update(receiver_key = secret_key)
+		# key_length = 128
+		# key_value = (hex(int(''.join([ str(i) for i in alice_key]), 2))[2:key_length + 2])
+		# secret_key = secret_keys.objects.filter(id = idx)
+		# secret_key = secret_key[0].receiver_key+key_value
+		# secret_keys.objects.filter(id = idx).update(receiver_key = secret_key)
 	print ("Bob Key : {} " .format(bob_key))	
 	return key
 
