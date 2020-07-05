@@ -26,7 +26,7 @@
   		<div id="menu" style="">
  		<div id="menu4">
 			<ul>
-			<li><a href="#">HOME</a></li>
+			<li><a href="{% url 'home' %}">HOME</a></li>
 			{% if user.is_authenticated %}
 
 			<li><a href="#">GIVE REVIEW</a></li>

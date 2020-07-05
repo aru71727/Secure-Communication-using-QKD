@@ -51,7 +51,6 @@ def receiver_bits(bob_key,s_idx):
 	return alice_key
 
 
-
 def generate_random_bits(N):
 	aux = list()
 	for i in range(N):

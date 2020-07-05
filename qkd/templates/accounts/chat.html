@@ -26,7 +26,7 @@
   		<div id="menu" style="">
  		<div id="menu4">
 			<ul>
-			<li><a href="#">HOME</a></li>
+			<li><a href="{% url 'home' %}">HOME</a></li>
 			{% if user.is_authenticated %}
 
 			<li><a href="#">GIVE REVIEW</a></li>
@@ -65,14 +65,21 @@
 			{% endif %}
 			</center>
 		</div>
+		<center><h3>{{ r_name}}</h3>
+			
+			{{r_msg.r_msg_body}}
+
+			{% if r_seen == True %}
+			<a href="{% url 'accounts:decrypt' user.id idx r_msg.id r_msg.index %}">Decrypt Message</a>
+			{% endif %}
 		{% if seen == False %}
 			{% if add == 0 %}
-			<h3>Sender : {{ msg.sender}}<br/>
-			Receiver : {{ msg.receiver }}<br/>
-			Message :	{{msg.msg_body}}<br/></h3>
+			<h3><!-- Sender : {{ msg.sender}} --><br/>
+			<!-- Receiver : {{ msg.receiver }} --><br/>
+			Message :	{{msg.s_msg_body}}<br/></h3>
 
 <form method="post" action="{% url 'accounts:reviews' user.id idx add  %}">{% csrf_token %}
-	<h3>Message:</h3> <textarea name="message" placeholder="Enter your message here..." style="width:300px; height: 60px;"></textarea>
+	<h3>Write Message:</h3> <textarea name="message" placeholder="Enter your message here..." style="width:300px; height: 60px;"></textarea>
 
 	<button onclick = "#" style="width:100px; height: 35px; background-color: green">Send Message</button>
 </form>
@@ -80,23 +87,22 @@
 
 			
 		{% else %}
+
 			<form method="post" action="{% url 'accounts:reviews' user.id idx add  %}">{% csrf_token %}
-			<h3>Message:</h3> <textarea name="message" placeholder="Enter your message here..." style="width:300px; height: 60px;"></textarea>
+			<h3>Write Message:</h3> <textarea name="message" placeholder="Enter your message here..." style="width:300px; height: 60px;"></textarea>
 
 			<button onclick = "#" style="width:100px; height: 35px; background-color: green">Send Message</button>
 			</form>
-
-
-				
-			{% endif %}
+		{% endif %}
 		{% else %}
-			<h3>Sender : {{ msg.sender}}<br/>
-			Receiver : {{ msg.receiver }}<br/>
-			Message :	{{msg.msg_body}}<br/>
-			Message has not seen yet!!!<br/>
+			<h3><!-- Sender : {{ msg.sender}} --><br/>
+			<!-- Receiver : {{ msg.receiver }} --><br/>
+			Message :	{{msg.s_msg_body}}
 			</h3>
 			<h4>Message Not Seen Yet!!!</h4>
 		{% endif %}
+	
+		</center>
 		</div>
 
 

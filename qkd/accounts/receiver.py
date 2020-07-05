@@ -54,9 +54,18 @@ def generate_random_bits(N):
 
 def receiver_msg(info,msg):
 	print(info)
-	Messages.objects.filter(id=info).update(r_msg_body = msg)
+	for i in info :
+		idx = i.id
+		Messages.objects.filter(id=idx).update(r_msg_body = msg, seen = True)
+	print("xyz")
+	return
+
+def receive_msg(info,msg):
+	
+	Messages.objects.filter(id=info).update(r_msg_body = msg, seen = True)
 	
 	return
+
 
 
 

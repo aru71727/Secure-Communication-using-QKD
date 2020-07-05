@@ -1,13 +1,11 @@
 import base64
 from cryptography.fernet import Fernet
-from .models import secret_keys,secret_keys_receiver
+from .models import secret_keys,secret_keys_receiver,Messages
 
 def encryption(id,msg):
-	print("asdff")
 	key = secret_keys.objects.filter(id = id)
 	key = key[0].sender_key
-	print(type(msg))
-	print(type(key))
+
 	# encoded_message = msg.encode()
 	# f = Fernet(key)
 	# encrypted_message = f.encrypt(encoded_message)
@@ -19,11 +17,8 @@ def encryption(id,msg):
 	return encrypted_message
 
 def decryption(id,msg):
-	print("asdff")
 	key = secret_keys_receiver.objects.filter(id = id)
 	key = key[0].receiver_key
-	print(type(msg))
-	print(type(key))
 	# encoded_message = msg.encode()
 	# f = Fernet(key)
 	# encrypted_message = f.encrypt(encoded_message)
@@ -33,3 +28,27 @@ def decryption(id,msg):
 	# encrypted_message = b64encode(msg)
 
 	return msg
+
+def s_key(s_idx):
+	secret_key = secret_keys.objects.filter(id= s_idx)
+	secret_key= secret_key[0].sender_key
+	return secret_key
+
+def r_key(r_idx):
+	secret_key = secret_keys_receiver.objects.filter(id= r_idx)
+	secret_key= secret_key[0].receiver_key
+	return secret_key
+
+def decryptin(id):
+	print("asdsssfssssssss")
+	print(id)
+	for i in id:
+
+		# secret_key = Messages.objects.filter(id= i)
+		# secret_key = secret_key[0].s_msg_body
+		secret_key = i.s_msg_body
+	print(secret_key)
+	print("abc")
+	return secret_key
+
+

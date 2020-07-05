@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 import time
 from numpy import matrix
 from math import pow, sqrt
@@ -14,8 +14,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect,HttpResponse
 from accounts.sender import sender_msg
-from accounts.receiver import receiver_msg
-from accounts.encrypt_decrypt import encryption,decryption
+from accounts.receiver import receiver_msg,receive_msg
+from accounts.encrypt_decrypt import *
 # from accounts.decryption import decryption
 
 
@@ -99,33 +99,6 @@ def registerview(request):
 
 
 def func(request):
-	# ret = list()
-	# N = 128
-	# key = secret_keys(sender_key = "" )
-	# key.save()
-	# s_idx = key.id
-	# key =  secret_keys_receiver(receiver_key = "" )
-	# key.save()
-	# r_idx = key.id
-	
-	# key = ""
-	# for i in range (N):
-	# 	print ("############# {0} #############".format(str(i)))
-	# 	ret.append(QKD(16,s_idx,r_idx,verbose = True ,eve_present = True))
-		
-	# 	print ("###############################".format(str(i)))
-	# secret_key = secret_keys.objects.filter(id= s_idx)
-	# print("secret_key"+secret_key)
-	# secret_keys_receiver = secret_keys_receiver.objects.filter(id= s_idx)
-	# print("secret_keys_receiver"  + secret_keys_receiver)
-	# print("sender key :"+secret_key[0].sender_key)
-	# print("receiver_key: "+secret_key[0].receiver_key)
-	
-	# t = "{0:.2f}".format(float(ret.count(True))*100.0/float(N))
-	# u = "{0:.2f}".format(float(ret.count(False))*100.0/float(N))
-	# print ("True: {0} <{1}%>".format(ret.count(True),str(t)))
-	# print ("False: {0} <{1}%>".format(ret.count(False),str(u)))
-	
 	profiles = Profile.objects.all()
 	return render(request,'accounts/index.html',{'profiles': profiles })
 	
@@ -135,19 +108,28 @@ def func(request):
 
 def chat(request,s_idx,r_idx):
 	profiles = Profile.objects.all()
-	print(int(s_idx))
-	print(int(r_idx))
-	print(profiles)
+	# print(int(s_idx))
+	# print(int(r_idx))
+	# print(profiles)
 
 	sender = Profile.objects.get(user=s_idx)
-	print(sender)
+	# print(sender)
 	receiver = Profile.objects.get(id=r_idx)
-	print(receiver)
+	# print(receiver)
 	receiver = receiver.user
+	sender  = sender.user
 	seen = False
 	add = 0
 	msg = Messages.objects.filter(sender = sender , receiver = receiver)
-	
+	r_msg = Messages.objects.filter(sender = receiver , receiver = sender)
+
+	r_name = receiver
+	r_seen = False
+	r_ex = 0
+	if len(r_msg) != 0:
+		r_seen = r_msg[0].seen
+		r_msg = r_msg[0]
+		r_ex = 1
 
 	if len(msg) == 0:
 			add = 1
@@ -157,16 +139,19 @@ def chat(request,s_idx,r_idx):
 	# print(seen)
 	# print(add)
 	# print(msg.sender)
-	params = {'profiles':profiles,'msg': msg,'add':add,'seen':seen,'idx':r_idx}
+	params = {'profiles':profiles,'msg': msg,'add':add,'seen':seen,'idx':r_idx,'r_name':r_name,'r_msg':r_msg,'r_seen':r_seen,'r_ex':r_ex}
 	
 	return render(request,'accounts/chat.html',params)
 
 
 
+
+
+
 def reviews(request,id,idx,add):
 	id=int(id)
-	print(id)
-	print(int(idx))
+	# print(id)
+	# print(int(idx))
 	if request.method == "POST":
 		msg = request.POST.get("message")
 	print(msg)
@@ -195,37 +180,150 @@ def reviews(request,id,idx,add):
 	
 	t = "{0:.2f}".format(float(ret.count(True))*100.0/float(N))
 	u = "{0:.2f}".format(float(ret.count(False))*100.0/float(N))
-	print ("True: {0} <{1}%>".format(ret.count(True),str(t)))
-	print ("False: {0} <{1}%>".format(ret.count(False),str(u)))
+	# print ("True: {0} <{1}%>".format(ret.count(True),str(t)))
+	# print ("False: {0} <{1}%>".format(ret.count(False),str(u)))
 
 	# key = secret_keys_receiver.objects.filter(id = r_idx)
 	# print(key)
-
-	
+	print("Exchanged Secret keys")
+	key = s_key(s_idx)
+	print("Sender's secret key")
+	print(key)
+	key = r_key(r_idx)
+	print("Receiver's secret key")
+	print(key)
 	sender = Profile.objects.get(user=id)
-	print(sender)
+	# print(sender.user)
 	receiver = Profile.objects.get(id=idx)
-	print(receiver)
+	# print(receiver.user)
+	sender = sender.user
 	receiver = receiver.user
 	
 	add = int(add)
-	print(type(s_idx))
+	# print(type(s_idx))
+
 	if add == 1:
 		info = Messages(sender = sender, receiver = receiver, s_msg_body = "",r_msg_body="", seen = False,index = s_idx)
 		info.save()
-		info = info.id
-		sender_msg(info,msg)
+		i = info.id
+		sender_msg(i,msg)
 		
 	else:
 
-		info = Messages.objects.get(sender = sender , receiver = receiver)
-		print("nvnhk")
-		info = info.id
-		sender_msg(info,msg)
+		info = Messages.objects.filter(sender = sender , receiver = receiver).update( s_msg_body = "",r_msg_body="",seen = False, index = s_idx)
+		
+		i = info
+
+		sender_msg(i,msg)
+	print("Message to send :")
+	print(msg)
 	msg = encryption(s_idx,msg)
+	print("Encrypted Msg : ")
 	print(msg)
-	receiver_msg(info,msg)
+	
+	receive_msg(i,msg)
+	info = Messages.objects.filter(sender = sender , receiver = receiver).update(seen = True)
+		
 	msg = decryption(r_idx,msg)
+	print("Decrypted Message :")
+	print(msg)
+	# Messages.objects.filter(id=info).update(seen = False)
+	# receiver_msg(info,msg)
+
+
+
+	# profiles = Profile.objects.all()
+	# # print(int(id))
+	# # print(int(idx))
+	# # print(profiles)
+
+	# sender = Profile.objects.get(user=id)
+	# # print(sender)
+	# receiver = Profile.objects.get(id=idx)
+	# # print(receiver)
+	# receiver = receiver.user
+	# sender  = sender.user
+	# seen = False
+	# add = 0
+	# msg = Messages.objects.filter(sender = sender , receiver = receiver)
+	# r_msg = Messages.objects.filter(sender = receiver , receiver = sender)
+	# r_name = receiver
+	# r_seen = False
+	# r_ex = 0
+	# if len(r_msg) != 0:
+	# 	r_seen = r_msg[0].seen
+	# 	r_msg = r_msg[0]
+	# 	r_ex = 1
+
+	# if len(msg) == 0:
+	# 		add = 1
+	# else:
+	# 	msg = msg[0]
+	# 	seen = msg.seen
+	# # print(seen)
+	# # print(add)
+	# # print(msg.sender)
+	# params = {'profiles':profiles,'msg': msg,'add':add,'seen':seen,'idx':r_idx,'r_name':r_name,'r_msg':r_msg,'r_seen':r_seen,'r_ex':r_ex}
+	
+	# return render(request,'accounts/chat.html',params)
+	return redirect('accounts:chat', s_idx= id, r_idx = idx)
+
+
+
+
+def decrypt(request,id,idx,info,r_idx):
+	# print(info)
+	info = Messages.objects.filter(id=info)
+	print(info)
+	# msg = info[0].r_msg_body
+	# r_idx = info[0].index
+	# print(r_idx)
+	# print(msg)
+	
+	print("hgsahgas")
+	msg = decryptin(info)
 	print(msg)
 	receiver_msg(info,msg)
-	return render(request,'accounts/in.html')
+	for i in info:
+		xyz = i.id
+		Messages.objects.filter(id=xyz).update(seen = False)
+	
+
+
+	# profiles = Profile.objects.all()
+	# # print(int(id))
+	# # print(int(idx))
+	# # print(profiles)
+
+	# sender = Profile.objects.get(user=id)
+	# # print(sender)
+	# receiver = Profile.objects.get(id=idx)
+	# # print(receiver)
+	# receiver = receiver.user
+	# sender  = sender.user
+	# seen = False
+	# add = 0
+	# msg = Messages.objects.filter(sender = sender , receiver = receiver)
+	# r_msg = Messages.objects.filter(sender = receiver , receiver = sender)
+	# r_name = receiver
+	# r_seen = False
+	# r_ex = 0
+	# if len(r_msg) != 0:
+	# 	r_seen = r_msg[0].seen
+	# 	r_msg = r_msg[0]
+	# 	r_ex = 1
+
+	# if len(msg) == 0:
+	# 		add = 1
+	# else:
+	# 	msg = msg[0]
+	# 	seen = msg.seen
+	# # print(seen)
+	# # print(add)
+	# # print(msg.sender)
+	# params = {'profiles':profiles,'msg': msg,'add':add,'seen':seen,'idx':r_idx,'r_name':r_name,'r_msg':r_msg,'r_seen':r_seen,'r_ex':r_ex}
+	
+	# return render(request,'accounts/chat.html',params)
+
+	return redirect('accounts:chat', s_idx= id, r_idx = idx)
+
