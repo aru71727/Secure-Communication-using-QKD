@@ -138,7 +138,12 @@ def chat(request,s_idx,r_idx):
 	# print(seen)
 	# print(add)
 	# print(msg.sender)
-	params = {'profiles':profiles,'msg': msg,'add':add,'seen':seen,'idx':r_idx,'r_name':r_name,'r_msg':r_msg,'r_seen':r_seen,'r_ex':r_ex}
+	pro = list()
+	for i in profiles:
+		if i.user != sender:
+			pro.append(i)
+			
+	params = {'profiles':pro,'msg': msg,'add':add,'seen':seen,'idx':r_idx,'r_name':r_name,'r_msg':r_msg,'r_seen':r_seen,'r_ex':r_ex}
 	
 	return render(request,'accounts/chat.html',params)
 
@@ -172,18 +177,11 @@ def reviews(request,id,idx,add):
 		ret.append(QKD(16,s_idx,r_idx,verbose = True ,eve_present = True))
 		
 		print ("###############################".format(str(i)))
-	# secret_key = secret_keys.objects.filter(id= s_idx)
-	# print(secret_key)
-	# print("sender key :"+secret_key[0].sender_key)
-	# print("receiver_key: "+secret_key[0].receiver_key)
-	
 	t = "{0:.2f}".format(float(ret.count(True))*100.0/float(N))
 	u = "{0:.2f}".format(float(ret.count(False))*100.0/float(N))
-	print ("True: {0} <{1}%>".format(ret.count(True),str(t)))
-	print ("False: {0} <{1}%>".format(ret.count(False),str(u)))
+	# print ("True: {0} <{1}%>".format(ret.count(True),str(t)))
+	# print ("False: {0} <{1}%>".format(ret.count(False),str(u)))
 
-	# key = secret_keys_receiver.objects.filter(id = r_idx)
-	# print(key)
 	print("Exchanged Secret keys")
 	key = s_key(s_idx)
 	print("Sender's secret key")

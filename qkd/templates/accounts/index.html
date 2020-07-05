@@ -4,13 +4,14 @@
     <!-- Required meta tags -->
     {% load static %}
    
-    <title>ecure Communication Using Quantum Key Distribution</title>
+    <title>Secure Communication Using Quantum Key Distribution</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'accounts/index.css' %}">
   </head>
   <body>
-  	<div id="wrapper" >
-  		<div id="first" style="margin-top: -200px">
+  	<div id="wrapper"style="width: 1350px; margin-left: -10px;" >
+
+  		<div id="first" style="margin-top: -200px;width: 1350px;float: left;">
   			
 
   			<div id="div11" style="margin-top: 15px;">
@@ -22,14 +23,13 @@
 				<p style="margin-top: 30px;font-size: 1.4em"><i>Communication – the human connection</i></p>
 				{% endif %}
   			</div>
-
-  		<div id="menu" style="">
- 		<div id="menu4">
+  			</div>
+  		<div id="menu" style="height: 50px;background-color: black;float: left;margin-top: -50px;width: 1350px;">
+ 		<div id="menu4" style="margin-top: 20px;background-color: black; width: 1350px">
 			<ul>
 			<li><a href="{% url 'home' %}">HOME</a></li>
 			{% if user.is_authenticated %}
 
-			<li><a href="#">GIVE REVIEW</a></li>
 			{% else %}
 			<li><a href="{% url 'accounts:register' %}">SIGN UP</a></li>
 			{% endif %}
@@ -42,11 +42,11 @@
 			</ul>
  		</div>
  		</div>
-  		</div>
+  		
 
 
-		<div id = "div21" style="margin-top:200px;background-color: green;">
-		<div id = "content" style="margin-right:100px;height:400px; width: 200px;  margin-top: 100px">
+		<div id = "div21" style="margin-top:200px; width: 1350px;">
+		<div id = "content" style="margin-right:100px;min-height:360px;height:auto; width: 200px;  margin-top: 100px;">
 			<center>
 			{% if user.is_authenticated %}
 
@@ -54,7 +54,7 @@
 			{% for i in profiles %}
 			<a href="{% url 'accounts:chat' user.id i.id%}">
 			<button style="width:350px; height: 50px;">
-			{{i.user}} {{i.id}}</button>
+			{{i.user}} </button>
 			</a><br/>
 			{% endfor %}
 				
@@ -69,7 +69,7 @@
 
 
 
-			<div id="footer" style="margin-top: 0px">
+			<div id="footer" style="margin-top: 0px; width:1310px;">
 			<p><i><marquee>
 			Communication – the human connection – is the key to personal and career success
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

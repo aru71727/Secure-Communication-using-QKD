@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    {% load static %}
+   
+    <title>NIT REVIEW SYSTEM</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/index.css' %}">
+  </head>
+  <body>
+  	<div id="wrapper" >
+  		<div id="first" style="margin-top: -200px">
+  			
+
+  			<div id="div11" style="margin-top: 15px;">
+				{% if user.is_authenticated %}
+				<h1 >HELLO!!  &nbsp;   {{ user.first_name}} </h1>
+				<p style="margin-top: 30px;font-size: 1.4em"><i>Rate your college today!</i></p>
+				{% else %}
+				<h1 >NIT REVIEWS</h1>
+				<p style="margin-top: 30px;font-size: 1.4em"><i>Rate your college today!</i></p>
+				{% endif %}
+  			</div>
+
+  		<div id="menu" style="">
+ 		<div id="menu4">
+			<ul>
+			<li><a href="{% url 'home' %}">HOME</a></li>
+			{% if user.is_authenticated %}
+
+			<li><a href="#">GIVE REVIEW</a></li>
+			{% else %}
+			<li><a href="{% url 'accounts:register' %}">SIGN UP</a></li>
+			{% endif %}
+			{% if user.is_authenticated %}
+			<li><a href="{% url 'accounts:logout' %}">LOGOUT</a></li>
+			{% else %}
+			<li><a href="{% url 'accounts:login' %}">LOGIN</a></li>
+			{% endif %}
+
+			</ul>
+ 		</div>
+ 		</div>
+  		</div>
+
+
+		<div id = "div21" style="margin-top:190px;background-color: pink;">
+		<div id = "content" style="margin-right:100px;height:200px; width: 200px;  margin-top: 100px">
+			<center>
+			{% if user.is_authenticated %}
+
+			<table>
+			{% for i in profiles %}
+			<a href="{% url 'accounts:chat' user.id  i.id %}">
+			<button style="width:350px; height: 50px;">
+			{{i.user}} {{i.id}}</button>
+			</a><br/>
+			{% endfor %}
+				
+			</table>
+
+			{% else %}
+
+			{% endif %}
+			</center>
+		</div>
+		<center><h3>{{ r_name}}</h3>
+			
+			{{r_msg.r_msg_body}}
+
+			{% if r_seen == True %}
+			<a href="{% url 'accounts:decrypt' user.id idx r_msg.id r_msg.index %}">Decrypt Message</a>
+			{% endif %}
+		{% if seen == False %}
+			{% if add == 0 %}
+			<h3><!-- Sender : {{ msg.sender}} --><br/>
+			<!-- Receiver : {{ msg.receiver }} --><br/>
+			Message :	{{msg.s_msg_body}}<br/></h3>
+
+<form method="post" action="{% url 'accounts:reviews' user.id idx add  %}">{% csrf_token %}
+	<h3>Write Message:</h3> <textarea name="message" placeholder="Enter your message here..." style="width:300px; height: 60px;"></textarea>
+
+	<button onclick = "#" style="width:100px; height: 35px; background-color: green">Send Message</button>
+</form>
+
+
+			
+		{% else %}
+
+			<form method="post" action="{% url 'accounts:reviews' user.id idx add  %}">{% csrf_token %}
+			<h3>Write Message:</h3> <textarea name="message" placeholder="Enter your message here..." style="width:300px; height: 60px;"></textarea>
+
+			<button onclick = "#" style="width:100px; height: 35px; background-color: green">Send Message</button>
+			</form>
+		{% endif %}
+		{% else %}
+			<h3><!-- Sender : {{ msg.sender}} --><br/>
+			<!-- Receiver : {{ msg.receiver }} --><br/>
+			Message :	{{msg.s_msg_body}}
+			</h3>
+			<h4>Message Not Seen Yet!!!</h4>
+		{% endif %}
+	
+		</center>
+		</div>
+
+
+
+			<div id="footer" style="margin-top: 0px">
+			<p><i><marquee>
+			Reviews of the Colleges
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			Reviews by the Students
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			Reviews for the Students
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			NIT Review System allows students from different NIT'S to give feedbacks on diffrent aspects
+			and generates graph on that basis.
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<h7>Visit Often for latest rankings...</h7></i></marquee></p>
+			</div>
+
+
+  	</div>
+  	</body>
+</html>
