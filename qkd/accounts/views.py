@@ -16,7 +16,6 @@ from django.http import HttpResponseRedirect,HttpResponse
 from accounts.sender import sender_msg
 from accounts.receiver import receiver_msg,receive_msg
 from accounts.encrypt_decrypt import *
-# from accounts.decryption import decryption
 
 
 from django.contrib.auth import (
@@ -158,7 +157,7 @@ def reviews(request,id,idx,add):
 
 
 	ret = list()
-	N = 128
+	N = 72
 	key = secret_keys_receiver(receiver_key = "" )
 	key.save()
 	r_idx = key.id
@@ -180,8 +179,8 @@ def reviews(request,id,idx,add):
 	
 	t = "{0:.2f}".format(float(ret.count(True))*100.0/float(N))
 	u = "{0:.2f}".format(float(ret.count(False))*100.0/float(N))
-	# print ("True: {0} <{1}%>".format(ret.count(True),str(t)))
-	# print ("False: {0} <{1}%>".format(ret.count(False),str(u)))
+	print ("True: {0} <{1}%>".format(ret.count(True),str(t)))
+	print ("False: {0} <{1}%>".format(ret.count(False),str(u)))
 
 	# key = secret_keys_receiver.objects.filter(id = r_idx)
 	# print(key)
@@ -227,59 +226,17 @@ def reviews(request,id,idx,add):
 	msg = decryption(r_idx,msg)
 	print("Decrypted Message :")
 	print(msg)
-	# Messages.objects.filter(id=info).update(seen = False)
-	# receiver_msg(info,msg)
 
-
-
-	# profiles = Profile.objects.all()
-	# # print(int(id))
-	# # print(int(idx))
-	# # print(profiles)
-
-	# sender = Profile.objects.get(user=id)
-	# # print(sender)
-	# receiver = Profile.objects.get(id=idx)
-	# # print(receiver)
-	# receiver = receiver.user
-	# sender  = sender.user
-	# seen = False
-	# add = 0
-	# msg = Messages.objects.filter(sender = sender , receiver = receiver)
-	# r_msg = Messages.objects.filter(sender = receiver , receiver = sender)
-	# r_name = receiver
-	# r_seen = False
-	# r_ex = 0
-	# if len(r_msg) != 0:
-	# 	r_seen = r_msg[0].seen
-	# 	r_msg = r_msg[0]
-	# 	r_ex = 1
-
-	# if len(msg) == 0:
-	# 		add = 1
-	# else:
-	# 	msg = msg[0]
-	# 	seen = msg.seen
-	# # print(seen)
-	# # print(add)
-	# # print(msg.sender)
-	# params = {'profiles':profiles,'msg': msg,'add':add,'seen':seen,'idx':r_idx,'r_name':r_name,'r_msg':r_msg,'r_seen':r_seen,'r_ex':r_ex}
-	
-	# return render(request,'accounts/chat.html',params)
 	return redirect('accounts:chat', s_idx= id, r_idx = idx)
 
 
 
 
 def decrypt(request,id,idx,info,r_idx):
-	# print(info)
+
 	info = Messages.objects.filter(id=info)
 	print(info)
-	# msg = info[0].r_msg_body
-	# r_idx = info[0].index
-	# print(r_idx)
-	# print(msg)
-	
+
 	print("hgsahgas")
 	msg = decryptin(info)
 	print(msg)
@@ -287,43 +244,5 @@ def decrypt(request,id,idx,info,r_idx):
 	for i in info:
 		xyz = i.id
 		Messages.objects.filter(id=xyz).update(seen = False)
-	
-
-
-	# profiles = Profile.objects.all()
-	# # print(int(id))
-	# # print(int(idx))
-	# # print(profiles)
-
-	# sender = Profile.objects.get(user=id)
-	# # print(sender)
-	# receiver = Profile.objects.get(id=idx)
-	# # print(receiver)
-	# receiver = receiver.user
-	# sender  = sender.user
-	# seen = False
-	# add = 0
-	# msg = Messages.objects.filter(sender = sender , receiver = receiver)
-	# r_msg = Messages.objects.filter(sender = receiver , receiver = sender)
-	# r_name = receiver
-	# r_seen = False
-	# r_ex = 0
-	# if len(r_msg) != 0:
-	# 	r_seen = r_msg[0].seen
-	# 	r_msg = r_msg[0]
-	# 	r_ex = 1
-
-	# if len(msg) == 0:
-	# 		add = 1
-	# else:
-	# 	msg = msg[0]
-	# 	seen = msg.seen
-	# # print(seen)
-	# # print(add)
-	# # print(msg.sender)
-	# params = {'profiles':profiles,'msg': msg,'add':add,'seen':seen,'idx':r_idx,'r_name':r_name,'r_msg':r_msg,'r_seen':r_seen,'r_ex':r_ex}
-	
-	# return render(request,'accounts/chat.html',params)
-
 	return redirect('accounts:chat', s_idx= id, r_idx = idx)
 
