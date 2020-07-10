@@ -1,5 +1,7 @@
 # Secure-Communicaion-using-QKD
 
+The security of our critical infrastructure is threatened by the advent of future quantum computers, breaking asymmetric cryptography – an essential part of our secure communication architecture. Quantum key distribution (QKD) remedies this weakness by providing a long term secure solution, safe against attacks from quantum computers.
+
 There are indeed many aspects to cryptography, and many different cryptographic tasks that one may consider. Likely the
 first cryptographic task that comes to mind is private communication: Alice and Bob wish to
 communicate, and they do not want an eavesdropper (Eve) to learn any information about their
