@@ -1,4 +1,4 @@
-# Secure-Communicaion-using-QKD
+# Secure-Communication-using-QKD
 
 The security of our critical infrastructure is threatened by the advent of future quantum computers, breaking asymmetric cryptography – an essential part of our secure communication architecture. Quantum key distribution (QKD) remedies this weakness by providing a long term secure solution, safe against attacks from quantum computers.
 
